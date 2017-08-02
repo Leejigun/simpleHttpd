@@ -1,5 +1,3 @@
-# WebServer를 만들어보자.
-
 ## 간단한 Echo Server, Echo Client 만들기
 
 - java.io, java.net, Exception 처리 등을 할 수 있어야 개발 가능합니다.
