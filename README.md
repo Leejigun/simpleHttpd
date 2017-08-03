@@ -8,4 +8,6 @@
 
 [response 처리](/doc/httpresponse/Readme.md)
 
+[파일을 읽어들여 출력](/doc/httpresponse1/Readme.md)
+
 [과제](/doc/simplehttpd/Readme.md)
