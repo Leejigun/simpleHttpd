@@ -93,6 +93,28 @@
   - http://localhost:8080 으로 접근했을때 로그 예.
     - Request [method=GET, requestTarget=/index.html, headers=[Cache-Control=max-age=0, Accept=text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8, Upgrade-Insecure-Requests=1, Connection=keep-alive, User-Agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36, Host=localhost:8080, Accept-Encoding=gzip, deflate, br, Accept-Language=ko-KR,ko;q=0.8,en-US;q=0.6,en;q=0.4]]
 
+- 힌트
+  - Requeset Class Fields
+    - String method: GET/POST 등의 메소드, request line을 파싱해서 추출가능
+    - String requestTarget: https://tools.ietf.org/html/rfc7230#section-3.1.1
+    - String httpVersion: "HTTP/1.1"로 상수 고정
+    - Map headers: String key/value 쌍으로 만들어지는 헤더정보. 구분자(delimiter)인 ":"를 포함시킬지 여부는 본인이 결정
+  - Requeset Class Method
+    - request 라인을 적절히 parsing 해서 method 필드와 requestTarget 필드에 값을 넣어주는 메소드
+    - header line을 입력받으면 key/value 로 headers에 넣는 메소드
+    - header key 값을 이용해서 header value를 돌려주는 메소드
+
+  - RequestHandler Class
+    - Request 처리를 담당하는 클래스를 만듭니다.
+    - handle 메소드에서는 Request 객체를 내부에서 생성해서 요청처리를 수행하게 만듭니다.
+    ```
+    public class RequestHandler {
+        public Request handle(Socket clientSocket){
+        ...
+    ```
+---
+    - HEADER 마지막을 구분해 내는 건 `while (!"".equals(line)) {}` 로 처리 가능합니다.
+    - 문자열 처리: https://docs.oracle.com/javase/tutorial/java/data/manipstrings.html
 ### STEP_03
 
 - ResponseHandler클래스는 requestTarget문자열과 Client Socket을 파라미터로 받아 Response객체를 반환하는 handle메소드를 가지고 있다.
@@ -110,7 +132,28 @@
   - http://localhost:8080/snapshot.png 으로 접근했을때 로그 예.
     - Response [statusCode=200, reasonPhrase=OK, headers=[Server=127.0.0.1, Content-Length=47476, Content-Type=image/png]]
 
+- 흰트
+  - Response 클래스를 만들어서 Response Status 및 Header 정보를 저장합니다.
+  - Response Class Fields
+    - String httpVersion: "HTTP/1.1"로 상수 고정
+    - String statusCode: 응답코드
+    - String reasonPhrase: reason phrase
+    - Map headers: key/value 쌍으로 만들어지는 헤더정보. 구분자(delimiter)인 ":"를 포함시킬지 여부는 본인이 결정
+  - Method
+      - Response status line 을 돌려주는 메소드
+  - 응답헤더에서 다음 헤더는 꼭 처리하세요
+      - Server
+      - Content-Type
+      - Content-Length
+- Response Handler Class
+      - Response 처리를 담당하는 ResponseHandler 클래스를 만듭니다.
 
+      ```
+      public class ResponseHandler {
+          public Response handle(Socket clientSocket)
+          ...
+      ```
+      - Response handle 메소드에서는 Response 객체를 내부에서 생성해서 응답을 수행하게 만듭니다.    
 ### STEP_04
 
 - DefaultServlet클래스를 작성한다.
