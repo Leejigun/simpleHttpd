@@ -83,3 +83,15 @@ public class WebServer {
 
 ```
 
+- 아래와 같이 java.nio.file 패키지 안의 Files, Path, Paths클래스를 이용하면 파일의 Content Type을 구할 수 있다.
+
+```
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+......
+            Path source = Paths.get(f.getAbsolutePath());
+            sb.append("Content-Type: " + Files.probeContentType(source));
+```            
+
